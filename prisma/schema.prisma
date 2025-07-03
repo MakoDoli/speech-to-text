@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model VoiceUser {
+  id         String @id @default(uuid())
+  clerkId    String @unique
+  createdAt  DateTime @default(now())
+  recordings Recording[]
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  password       String
+  emailVerified  Boolean  @default(false)
+}
+
+model Recording {
+  id         String @id @default(uuid())
+  userId     String
+  createdAt  DateTime @default (now())
+  user       VoiceUser  @relation(fields: [userId], references: [id])
+  fileUrl    String
+  transcript String
+}
