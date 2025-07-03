@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
+import { CircleStop, MicVocal, TimerReset } from "lucide-react";
 
 export function VoiceRecorder() {
   const [isRecording, setIsRecording] = useState(false);
@@ -59,12 +60,13 @@ export function VoiceRecorder() {
     recorder.start();
     setIsRecording(true);
 
+    // recording duration limit
     let seconds = 0;
     timerRef.current = setInterval(() => {
       seconds++;
       setElapsedTime(seconds);
       if (seconds >= MAX_SECONDS) {
-        stopRecording(); // auto-stop at limit
+        stopRecording();
       }
     }, 1000);
   };
@@ -75,18 +77,21 @@ export function VoiceRecorder() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8 justify-center mt-12 ">
       <div className="flex gap-4 items-center">
         {!isRecording ? (
-          <Button onClick={startRecording}>🎤 Start Recording</Button>
+          <Button onClick={startRecording}>
+            <MicVocal />
+            Start Recording
+          </Button>
         ) : (
           <Button onClick={stopRecording} variant="destructive">
-            ⏹️ Stop
+            <CircleStop /> Stop
           </Button>
         )}
         {isRecording && (
-          <span className="text-gray-500">
-            ⏱️ {elapsedTime}s / {MAX_SECONDS}s
+          <span className="text-muted-foreground flex gap-3">
+            <TimerReset /> {elapsedTime}s / {MAX_SECONDS}s
           </span>
         )}
       </div>

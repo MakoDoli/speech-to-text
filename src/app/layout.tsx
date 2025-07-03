@@ -9,6 +9,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Header from "@/components/Header";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,10 +47,18 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <SignedIn>{children}</SignedIn>
-            <SignedOut>
-              <RedirectToSignIn />
-            </SignedOut>
+            <SidebarProvider>
+              <AppSidebar />
+
+              <SignedIn>
+                <SidebarTrigger />
+
+                {children}
+              </SignedIn>
+              <SignedOut>
+                <RedirectToSignIn />
+              </SignedOut>
+            </SidebarProvider>
           </ThemeProvider>
         </body>
       </html>
