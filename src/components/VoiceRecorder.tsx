@@ -4,8 +4,10 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { CircleStop, Mic, TimerReset } from "lucide-react";
+import useRecordings from "@/providers/RecordingsProvider";
 
 export function VoiceRecorder() {
+  const { fetchRecordings } = useRecordings();
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
@@ -13,6 +15,7 @@ export function VoiceRecorder() {
   const audioChunks = useRef<Blob[]>([]);
   const [transcript, setTranscript] = useState<string>("");
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [isConverting, setIsConverting] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const { user } = useUser();
 
@@ -29,6 +32,7 @@ export function VoiceRecorder() {
     };
 
     recorder.onstop = async () => {
+      setIsConverting(true);
       clearInterval(timerRef.current!);
       setElapsedTime(0);
       if (!user) return;
@@ -47,7 +51,8 @@ export function VoiceRecorder() {
 
         const result = await response.json();
         setTranscript(result.transcription || "Transcription failed.");
-        //fetchRecordings()
+        fetchRecordings();
+        setIsConverting(false);
       } catch (error) {
         console.error(error);
         setTranscript("Error uploading or transcribing audio.");
@@ -100,8 +105,16 @@ export function VoiceRecorder() {
         )}
       </div>
 
-      <div className="p-4 bg-muted text-muted-foreground  rounded-xl  min-h-[50px]">
-        {transcript ? transcript : "Your transcription will appear here..."}
+      <div
+        className={`p-4 bg-muted text-muted-foreground  rounded-xl  min-h-[50px] ${
+          isConverting ? "animate-pulse" : ""
+        }`}
+      >
+        {transcript
+          ? transcript
+          : !isConverting
+          ? "Your transcription will appear here..."
+          : "Just a second..."}
       </div>
     </div>
   );

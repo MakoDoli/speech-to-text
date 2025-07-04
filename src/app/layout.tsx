@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import Header from "@/components/Header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import { RecordingsProvider } from "@/providers/RecordingsProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,18 +48,19 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <SidebarProvider>
-              <AppSidebar />
+            <RecordingsProvider>
+              <SidebarProvider>
+                <AppSidebar />
 
-              <SignedIn>
-                <SidebarTrigger />
-
-                {children}
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </SidebarProvider>
+                <SignedIn>
+                  <SidebarTrigger />
+                  {children}
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn />
+                </SignedOut>
+              </SidebarProvider>
+            </RecordingsProvider>
           </ThemeProvider>
         </body>
       </html>

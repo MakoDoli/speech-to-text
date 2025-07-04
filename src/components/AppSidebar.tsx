@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 
 import {
   Sidebar,
@@ -9,37 +8,20 @@ import {
 } from "@/components/ui/sidebar";
 import { Loader, Videotape } from "lucide-react";
 import RecordingCard from "./RecordingCard";
+import useRecordings from "@/providers/RecordingsProvider";
 
-export type Recording = {
-  id: string;
-  fileUrl: string;
-  transcript: string;
-  createdAt: string;
-};
 export function AppSidebar() {
-  const [recordings, setRecordings] = useState<Recording[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { recordings, isLoading } = useRecordings();
 
-  useEffect(() => {
-    const fetchRecordings = async () => {
-      const res = await fetch("/api/recordings");
-      const data = await res.json();
-
-      setRecordings(data.recordings || []);
-      setIsLoading(false);
-    };
-
-    fetchRecordings();
-  }, []);
   return (
-    <Sidebar variant="floating" className="mt-16  h-auto ">
+    <Sidebar variant="floating" className="mt-16  h-auto scroll-auto ">
       <SidebarHeader className="mb-4 text-secondary-foreground  ">
         <div className="flex gap-2">
           <Videotape className="opacity-80" />
           <h2 className="text-[16px]">My recordings</h2>
         </div>
       </SidebarHeader>
-      <SidebarContent className="p-2">
+      <SidebarContent className="p-2 space-y-2">
         {isLoading && <Loader className="animate-spin" />}
         {recordings.length === 0 && (
           <div className="text-secondary-foreground">
