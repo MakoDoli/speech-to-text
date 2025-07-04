@@ -1,15 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
+
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { Loader2Icon } from "lucide-react";
+import { Loader, Videotape } from "lucide-react";
+import RecordingCard from "./RecordingCard";
 
-type Recording = {
+export type Recording = {
   id: string;
   fileUrl: string;
   transcript: string;
@@ -23,7 +24,7 @@ export function AppSidebar() {
     const fetchRecordings = async () => {
       const res = await fetch("/api/recordings");
       const data = await res.json();
-      console.log(data);
+
       setRecordings(data.recordings || []);
       setIsLoading(false);
     };
@@ -32,18 +33,26 @@ export function AppSidebar() {
   }, []);
   return (
     <Sidebar variant="floating" className="mt-16  h-auto ">
-      <SidebarHeader className="mb-4">My recordings</SidebarHeader>
+      <SidebarHeader className="mb-4 text-secondary-foreground  ">
+        <div className="flex gap-2">
+          <Videotape className="opacity-80" />
+          <h2 className="text-[16px]">My recordings</h2>
+        </div>
+      </SidebarHeader>
       <SidebarContent className="p-2">
-        {isLoading && <Loader2Icon className="animate-spin" />}
-        {recordings.length === 0 && <div>No recordings yet.</div>}
+        {isLoading && <Loader className="animate-spin" />}
+        {recordings.length === 0 && (
+          <div className="text-secondary-foreground">
+            No recordings yet. Let us hear your voice
+          </div>
+        )}
         {recordings.map((rec) => (
-          <Card key={rec.id} className="p-2">
-            <audio controls src={rec.fileUrl} className="w-full h-8" />
-            <p className="text-xs text-muted-foreground  ">
-              {new Date(rec.createdAt).toLocaleString()}
-            </p>
-            <p className="">{rec.transcript}</p>
-          </Card>
+          <RecordingCard
+            key={rec.id}
+            src={rec.fileUrl}
+            date={rec.createdAt}
+            text={rec.transcript}
+          />
         ))}
       </SidebarContent>
       <SidebarFooter />

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
-import { CircleStop, MicVocal, TimerReset } from "lucide-react";
+import { CircleStop, Mic, TimerReset } from "lucide-react";
 
 export function VoiceRecorder() {
   const [isRecording, setIsRecording] = useState(false);
@@ -18,11 +18,6 @@ export function VoiceRecorder() {
 
   const MAX_SECONDS = 10;
 
-  useEffect(() => {
-    if (!user) return;
-    console.log("Logged in as:", user.id);
-  }, [user]);
-
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const recorder = new MediaRecorder(stream);
@@ -36,6 +31,7 @@ export function VoiceRecorder() {
     recorder.onstop = async () => {
       clearInterval(timerRef.current!);
       setElapsedTime(0);
+      if (!user) return;
 
       const audioBlob = new Blob(audioChunks.current, { type: "audio/webm" });
       audioChunks.current = [];
@@ -51,6 +47,7 @@ export function VoiceRecorder() {
 
         const result = await response.json();
         setTranscript(result.transcription || "Transcription failed.");
+        //fetchRecordings()
       } catch (error) {
         console.error(error);
         setTranscript("Error uploading or transcribing audio.");
@@ -80,12 +77,19 @@ export function VoiceRecorder() {
     <div className="flex flex-col gap-8 justify-center mt-12 ">
       <div className="flex gap-4 items-center">
         {!isRecording ? (
-          <Button onClick={startRecording}>
-            <MicVocal />
+          <Button
+            onClick={startRecording}
+            className="bg-gradient-to-r from-blue-800 to-muted-foreground hover:from-muted-foreground hover:to-blue-800 cursor-pointer transition-all duration-1000 "
+          >
+            <Mic />
             Start Recording
           </Button>
         ) : (
-          <Button onClick={stopRecording} variant="destructive">
+          <Button
+            onClick={stopRecording}
+            variant="destructive"
+            className="animate-pulse cursor-pointer"
+          >
             <CircleStop /> Stop
           </Button>
         )}
@@ -96,7 +100,7 @@ export function VoiceRecorder() {
         )}
       </div>
 
-      <div className="p-4 bg-gray-100 rounded-xl text-gray-700 min-h-[50px]">
+      <div className="p-4 bg-muted text-muted-foreground  rounded-xl  min-h-[50px]">
         {transcript ? transcript : "Your transcription will appear here..."}
       </div>
     </div>

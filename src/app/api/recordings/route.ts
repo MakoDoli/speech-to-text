@@ -5,7 +5,6 @@ import { auth } from "@clerk/nextjs/server";
 const prisma = new PrismaClient();
 
 export async function GET() {
-  console.log("GETTING RECORDINGS!!!");
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -19,7 +18,7 @@ export async function GET() {
       },
     },
   });
-  console.log(voiceUser);
+
   if (!voiceUser) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
