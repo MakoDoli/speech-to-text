@@ -23,7 +23,7 @@ export function VoiceRecorder() {
   const MAX_SECONDS = 10;
 
   const startRecording = async () => {
-    if (recordings.length > 2) {
+    if (recordings.length >= 2) {
       const isPaid = await checkIfUserPaid();
 
       if (!isPaid) {
