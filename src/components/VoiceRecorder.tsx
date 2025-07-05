@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { CircleStop, Mic, TimerReset } from "lucide-react";
 import useRecordings from "@/providers/RecordingsProvider";
+import { checkIfUserPaid } from "@/server/actions";
 
 export function VoiceRecorder() {
-  const { fetchRecordings } = useRecordings();
+  const { recordings, fetchRecordings } = useRecordings();
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
@@ -22,6 +23,18 @@ export function VoiceRecorder() {
   const MAX_SECONDS = 10;
 
   const startRecording = async () => {
+    console.log("RECORDINGS AMOUNT: ", recordings.length);
+    if (recordings.length > 2) {
+      console.log("WE HAVE TO PAY!");
+      const isPaid = await checkIfUserPaid();
+      console.log("DID WE PAY? ", isPaid);
+      if (!isPaid) {
+        const res = await fetch("/api/checkout", { method: "POST" });
+        const { url } = await res.json();
+        window.location.href = url;
+        return;
+      }
+    }
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const recorder = new MediaRecorder(stream);
     setMediaRecorder(recorder);
@@ -32,10 +45,10 @@ export function VoiceRecorder() {
     };
 
     recorder.onstop = async () => {
-      setIsConverting(true);
       clearInterval(timerRef.current!);
       setElapsedTime(0);
       if (!user) return;
+      setIsConverting(true);
 
       const audioBlob = new Blob(audioChunks.current, { type: "audio/webm" });
       audioChunks.current = [];
@@ -44,7 +57,7 @@ export function VoiceRecorder() {
       formData.append("file", audioBlob, "recording.webm");
 
       try {
-        const response = await fetch("/api/upload-recording", {
+        const response = await fetch("/api/upload-recordinggg", {
           method: "POST",
           body: formData,
         });
