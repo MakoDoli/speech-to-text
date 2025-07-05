@@ -55,7 +55,7 @@ export function VoiceRecorder() {
       formData.append("file", audioBlob, "recording.webm");
 
       try {
-        const response = await fetch("/api/upload-recordinggg", {
+        const response = await fetch("/api/upload-recording", {
           method: "POST",
           body: formData,
         });
