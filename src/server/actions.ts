@@ -1,7 +1,10 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { PrismaClient } from "@/generated/prisma";
+//import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+
+const prisma = new PrismaClient();
 
 export async function checkIfUserPaid() {
   const { userId } = await auth();
