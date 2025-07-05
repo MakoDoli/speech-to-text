@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
 
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
+//import { PrismaClient } from "@/generated/prisma";
 
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || "";
 
