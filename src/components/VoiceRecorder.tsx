@@ -23,11 +23,9 @@ export function VoiceRecorder() {
   const MAX_SECONDS = 10;
 
   const startRecording = async () => {
-    console.log("RECORDINGS AMOUNT: ", recordings.length);
     if (recordings.length > 2) {
-      console.log("WE HAVE TO PAY!");
       const isPaid = await checkIfUserPaid();
-      console.log("DID WE PAY? ", isPaid);
+
       if (!isPaid) {
         const res = await fetch("/api/checkout", { method: "POST" });
         const { url } = await res.json();

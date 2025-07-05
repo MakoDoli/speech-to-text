@@ -6,7 +6,6 @@ import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
-// Set this to your Clerk Webhook secret
 const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || "";
 
 export async function POST(req: NextRequest) {

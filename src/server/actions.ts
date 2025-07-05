@@ -12,5 +12,5 @@ export async function checkIfUserPaid() {
     select: { isPaid: true },
   });
 
-  return user.isPaid || false;
+  return user?.isPaid || false;
 }
