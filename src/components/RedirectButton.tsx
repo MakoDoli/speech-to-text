@@ -3,23 +3,37 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function RedirectButton({ text }: { text: string }) {
   const [count, setCount] = useState(3);
   const router = useRouter();
 
-  const timer = setTimeout(() => {
-    setCount((prev) => prev - 1);
-  }, 1000);
   useEffect(() => {
-    if (count < 1) router.push("/");
-    return clearTimeout(timer);
+    const timer = setInterval(() => {
+      setCount((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+
+          setTimeout(() => {
+            router.push("/");
+          }, 0);
+          return 0;
+        }
+
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center space-y-4 pl-10">
-      <Button className="w-44">{text}</Button>
+      <Link href="/">
+        <Button className="w-44">{text}</Button>
+      </Link>
       <p className="text-muted-foreground"> Redirecting in {count}</p>
     </div>
   );

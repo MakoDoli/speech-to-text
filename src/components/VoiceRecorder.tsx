@@ -8,7 +8,7 @@ import useRecordings from "@/providers/RecordingsProvider";
 import { checkIfUserPaid } from "@/server/actions";
 
 export function VoiceRecorder() {
-  const { recordings, fetchRecordings } = useRecordings();
+  const { recordings, fetchRecordings, isLoading } = useRecordings();
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
@@ -95,6 +95,7 @@ export function VoiceRecorder() {
         {!isRecording ? (
           <Button
             onClick={startRecording}
+            disabled={isLoading}
             className="bg-gradient-to-r from-blue-800 to-muted-foreground hover:from-muted-foreground hover:to-blue-800 cursor-pointer transition-all duration-1000 "
           >
             <Mic />
