@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎙️ Voice Scribe
+Because calling it "Speechy McSpeechface" felt... wrong.
 
-## Getting Started
+Voice Scribe is a Next.js app that turns your brilliant thoughts into readable text. Speak your mind — whether it’s your grocery list or your next big idea — and we’ll scribble it down for you.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### ✅ Built with Next.js, TailwindCSS, and shadcn/ui for clean, modern UI
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🔐 Clerk for authentication (so your random thoughts stay yours)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🛢️ Supabase + Prisma for managing users & recordings
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 💳 Stripe to handle payments (because API credits aren’t free 😅)
 
-## Learn More
+## 🤖 OpenAI for accurate transcription
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 Features
+#### 🎤 Record your voice directly in the browser
+#### 📝 Instantly transcribe your speech to text
+#### 🆓 First 2 recordings are free!
+#### 💰 Starting from your 3rd recording, you’ll be prompted to pay (one-time payment via Stripe)
+#### 🛡️ Secure authentication with Clerk
+#### 📂 Recordings & transcripts are stored safely in Supabase
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 🚀 Running the Project
+Haha, nice try.
 
-## Deploy on Vercel
+You won’t be able to run this locally anyway — too many API keys, secrets and setups involved.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+But hey, feel free to browse the code, steal some ideas, or open an issue if you're feeling fancy.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 💳 Stripe Test Payment
+When testing payments, use the classic test card:
+
+
+Card Number: 4242 4242 4242 4242
+
+Expiry Date: Any future date  
+CVC: Any 3 digits  
+ZIP: Any 5 digits  
+(Yes, all 16 digits are 42. Stripe engineers have a sense of humor too.)
+
